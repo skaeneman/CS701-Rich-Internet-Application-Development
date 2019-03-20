@@ -15,71 +15,55 @@ function init() {
         x = e.clientX - e.target.offsetLeft;
         y = e.clientY - e.target.offsetTop;
 
-        // loop through existing circles
-        circlesArray.forEach(circle => {
-            var distance = findDistance(circle.x, circle.y, x, y);
+        // check if the new circle is overlapping existing circles
+        checkForOverlappingCircles(circlesArray, circleCircumference, x, y, context, canvas) 
 
-            console.log('distance', distance);
+        // generate a random color
+        var createColor = randomColor();
 
-            // generate a random color
-            var createColor = randomColor();
+        // push the new circle into an array
+        circlesArray.push({ x: x, y: y, color: createColor, isOverlapping: false })
 
-            if (distance < (circleCircumference * 2)) {
-                // mark circle as overlapping
-                // circle.isOverlapping = true;
-                console.log('overlapping', circle)
-
-                circlesArray.push({
-                    x: x,
-                    y: y,
-                    color: createColor,
-                    isOverlapping: true
-                })
-            } else {
-
-                // add circle to array
-                circlesArray.push({
-                    x: x,
-                    y: y,
-                    color: createColor,
-                    isOverlapping: false
-                })
-
-                // // create the circles with random colors
-                // context.fillStyle = createColor;
-                // context.beginPath();
-                // context.arc(x, y, circleCircumference, 0, Math.PI * 2);
-                // context.fill();
-                // context.closePath();
-
-            }     
-        }); // forEach
-
-        generateCircles(circlesArray);
-        console.log('circlesArray', circlesArray);
-
-    }
+        // create the circles on the canvas
+        generateCircles(circlesArray, context, circleCircumference);
+    }      
 }
 
 // find the distance between 2 circles
-// distance = squareRoot( (x2-x1)^2 + (y2-y1)^2 )
+// distance formula is squareRoot( (x2-x1)^2 + (y2-y1)^2 )
 function findDistance(x1, y1, x2, y2) {
     distance = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
     return distance;
 }
 
+// check to see if a new circle is overlapping an existing circle
+function checkForOverlappingCircles(circlesArray, circleCircumference, x, y, context, canvas) {
+    // loop through existing circles in the array
+    circlesArray.forEach(circle => {
+        // find distance between current circle and exitsing ones
+        var distance = findDistance(circle.x, circle.y, x, y);
+        // if there is an overlap, set circle isOverlapping attribute to true
+        if (distance < (circleCircumference * 2)) {
+            circle.isOverlapping = true;
+            console.log('overlapping circle: ', circle);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    });
+}
 
-function generateCircles(circlesArray) {
-    for (var i = 0; i < circlesArray.length; i++) {
-
-        if (circlesArray[i].isOverlapping != true) {
+// create the circles on the canvas
+function generateCircles(circlesArray, context, circleCircumference) {
+    // loop through all circles in the array
+    circlesArray.forEach(circle => {
+        // if there is no overlap then create the circle
+        if (circle.isOverlapping != true) {
             context.beginPath();
-            context.fillStyle = circlesArray[i].color;
-            context.arc(circlesArray[i].x, circlesArray[i].y, circleCircumference, 0, Math.PI * 2);
+            context.fillStyle = circle.color;
+            context.arc(circle.x, circle.y, circleCircumference, 0, Math.PI * 2);
             context.fill();
             context.closePath();
         }
-    }
+    });
 }
 
 
