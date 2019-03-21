@@ -18,7 +18,7 @@ function init() {
         // create the circles with random colors
         context.fillStyle = createColor;
         context.beginPath();
-        context.arc(x, y, 30, 0, Math.PI * 2);
+        context.arc(x, y, 30, 0, Math.PI * 2, true);
         context.fill();
         context.closePath();
     }

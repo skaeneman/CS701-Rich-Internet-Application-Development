@@ -6,7 +6,7 @@ function init() {
     var context = canvas.getContext("2d");
 
     var circlesArray = []; // array to hold circles
-    var circleCircumference = 30;
+    var circleRadius = 30;
 
     // mouse down event handler
     canvas.onmousedown = function (e) {
@@ -16,7 +16,8 @@ function init() {
         y = e.clientY - e.target.offsetTop;
 
         // check if the new circle is overlapping existing circles
-        checkForOverlappingCircles(circlesArray, circleCircumference, x, y, context, canvas) 
+        // if an overlap exists all circles will be removed from the canvas
+        checkForOverlappingCircles(circlesArray, circleRadius, x, y, context, canvas) 
 
         // generate a random color
         var createColor = randomColor();
@@ -24,8 +25,8 @@ function init() {
         // push the new circle into an array
         circlesArray.push({ x: x, y: y, color: createColor, isOverlapping: false })
 
-        // create the circles on the canvas
-        generateCircles(circlesArray, context, circleCircumference);
+        // re-draw only the circles that have isOverlapping attribute set to false.
+        generateCircles(circlesArray, context, circleRadius);
     }      
 }
 
@@ -37,29 +38,31 @@ function findDistance(x1, y1, x2, y2) {
 }
 
 // check to see if a new circle is overlapping an existing circle
-function checkForOverlappingCircles(circlesArray, circleCircumference, x, y, context, canvas) {
+function checkForOverlappingCircles(circlesArray, circleRadius, x, y, context, canvas) {
     // loop through existing circles in the array
     circlesArray.forEach(circle => {
         // find distance between current circle and exitsing ones
         var distance = findDistance(circle.x, circle.y, x, y);
+        var circleDiameter = circleRadius * 2;
         // if there is an overlap, set circle isOverlapping attribute to true
-        if (distance < (circleCircumference * 2)) {
+        if (distance < circleDiameter) {
             circle.isOverlapping = true;
             console.log('overlapping circle: ', circle);
+            // there was an overlap so remove all circles from the canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
         }
     });
 }
 
 // create the circles on the canvas
-function generateCircles(circlesArray, context, circleCircumference) {
+function generateCircles(circlesArray, context, circleRadius) {
     // loop through all circles in the array
     circlesArray.forEach(circle => {
         // if there is no overlap then create the circle
         if (circle.isOverlapping != true) {
             context.beginPath();
             context.fillStyle = circle.color;
-            context.arc(circle.x, circle.y, circleCircumference, 0, Math.PI * 2);
+            context.arc(circle.x, circle.y, circleRadius, 0, Math.PI * 2, true);
             context.fill();
             context.closePath();
         }
