@@ -12,17 +12,24 @@
     <svg width="500" height="300">
         <defs>
             <g id="stopSign">
-                <polygon points="60,10 130,10 165,50  
-                        165,120 130,155 60,155 25,120, 25,50" fill="red" stroke="#C0C0C0" stroke-width="5">
+                <polygon points="45,5 115,5 150,45  
+                        150,115 115,150 45,150 10,115, 10,45" fill="red" stroke="#C0C0C0" stroke-width="5">
                 </polygon>
-                
-                <text x=63 y=95 font-family="san-serif" font-size="26px" fill="#FFFFFF">
+
+                <text x=43 y=90 font-family="san-serif" font-size="30px" fill="#FFFFFF">
                     STOP
                 </text>
             </g>
         </defs>
 
+        <!-- regular -->
         <use xlink:href="#stopSign" transform="translate(0,0)"></use>
+
+        <!-- rotated 90 degrees -->
+        <use xlink:href="#stopSign" transform="translate(155,0) rotate(90, 80, 80)"></use>
+
+        <!-- rotated 180 degrees -->
+        <use xlink:href="#stopSign" transform="translate(315,-4) rotate(180, 80, 80)"></use>
 
     </svg>
 
