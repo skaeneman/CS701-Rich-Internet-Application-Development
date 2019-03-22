@@ -47,7 +47,7 @@ var sliderModule = (function (win, doc) {
 
             // draw the pattern
             context.beginPath();
-            context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, true);
             context.fill();
             context.closePath(); 
 
