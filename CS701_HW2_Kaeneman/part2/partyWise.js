@@ -2,7 +2,19 @@ window.onload = init;
 
 // called on page load
 function init() {
-	loadFromXml();
+  // get local storage data or null value
+  var localStorageSenators = localStorage.getItem("senators");
+  console.log('localStorageSenators', localStorageSenators);
+
+  // if data is not already in browsers local storage get from xml
+  if (localStorageSenators == null) {
+    loadFromXml();
+  } else {
+    // else data aleady in local storage, convert it into a JavaScript object
+    var senators = JSON.parse(localStorageSenators);
+    loadFromLocalStorage(senators);
+  }
+
 }
 
 // get the xml list of senators
@@ -18,7 +30,7 @@ function loadFromXml() {
     xhttp.send();
 }
 
-// craetes JSON objects and stores the xml data locally
+// creates JSON objects and stores the xml data locally
 function processXml(xml) {
     var senatorArr = [];
     var senatorXml = xml.responseXML;
@@ -42,11 +54,29 @@ function processXml(xml) {
     senatorArr.forEach(senator => {
         output += "<li draggable='true'>" + senator.name + "</li>";        
     });
-    // console.log(output);
 
     // send formatted output to an html element
     document.getElementById("members").innerHTML = output;
 
+    document.getElementById("msg").innerHTML = "From AJAX Loaded " +
+    senatorArr.length + " senators";
+   
     // save as JSON to local storage in the browser
     localStorage.setItem('senators', JSON.stringify(senatorArr));    
 }
+
+// processes local storage data
+function loadFromLocalStorage(senators) {
+    var output = '';
+
+    // loop through array to format output and make dragable
+    senators.forEach(senator => {
+        output += "<li draggable='true'>" + senator.name + "</li>";        
+    });
+
+    // send formatted output to an html element
+    document.getElementById("members").innerHTML = output;
+
+    document.getElementById("msg").innerHTML = "From LocalStorage Loaded " +
+    senators.length + " senators";
+};
