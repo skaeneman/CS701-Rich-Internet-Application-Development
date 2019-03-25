@@ -129,8 +129,6 @@ function dragEnterHandler(e) {
 }
 
 function dragOverHandler(e) {
-
-  // causes legends to disapear after the drop
   msg.innerHTML = "Drag Over " + e.target.id;
   e.preventDefault();  
 }
@@ -139,45 +137,35 @@ function dropHandler(e) {
   console.log("Drop on " + e.target.id + 
            " source is " + e.dataTransfer.getData("Text")) ;
  
-  console.log('sourceid', sourceId);
-
   var sourceElement = document.getElementById(sourceId);
   var newElement = sourceElement.cloneNode(true); // show in legend
   
-  // dragging from the legend is not allowed after a vote is cast
-  newElement.setAttribute("draggable", "false");
-  // prevent a senator from voting twice
-  sourceElement.setAttribute("draggable", "false");
-
-
-
   var senator = findSenator(sourceId);
-  senator.voted = true; // update vote to true
   var politicalParty = e.target.id;
 
+  // make sure they can only cast a vote in their own party
+  var isCorrectParty = checkPoliticalParty(politicalParty, senator);
 
-  console.log('senator.party', senator.party);
-  console.log('politicalParty', politicalParty);
+  if (isCorrectParty == true) {    
+    // set the senators vote to true in localStorage and JSON
+    updateLocalStorage(senator);
 
-  if (politicalParty == 'republicans') {
-    politicalParty = 'Republican';
-  } 
-  else if (politicalParty == 'democrats') {
-    politicalParty = 'Democrat';
-  }
+    // dragging from the legend is not allowed after a vote is cast
+    newElement.setAttribute("draggable", "false");
+    // prevent a senator from voting twice
+    sourceElement.setAttribute("draggable", "false");    
 
-  // check if senator is voting in correct party
-  if (senator.party == politicalParty) {
-    // allow the senator to cast a vote
-    console.log('senator', senator);
     // todo: HARD CODED TEST...
     republicans.appendChild(newElement);
-  } else {
+
+    e.preventDefault();
+  } 
+  else if (isCorrectParty == false) {
     // they tried to vote in the wrong political party
-    msg.innerHTML = sourceId + " tried to vote in the wrong party...";
+    // msg.innerHTML = sourceId + " tried to vote in the wrong party...";
+    console.log(senator.name, "vote not counted...wrong party.");
   }
 
-  e.preventDefault();
 }
 
 // lookup a senator by name
@@ -194,3 +182,37 @@ function findSenator(name) {
   };
 }
 
+// check a senators political party
+function checkPoliticalParty(politicalParty, senator) {
+  // make dropzone name match JSON party name
+  if (politicalParty == 'republicans') {
+    politicalParty = 'Republican';
+  } 
+  else if (politicalParty == 'democrats') {
+    politicalParty = 'Democrat';
+  }
+  // check if senator is voting in his\her party
+  if (senator.party == politicalParty) {
+      return true;
+  } else {
+      return false;
+  }
+}
+
+// update localStorage after a vote is cast
+function updateLocalStorage(senator) {
+  // get data from localStorage in browser
+  var localStorageSenators = localStorage.getItem("senators");
+  var senators = JSON.parse(localStorageSenators);
+  
+  // update vote to true, save back to localStorage
+  for (var i=0; i < senators.length; i++) {
+    if (senators[i].name == senator.name) {
+        senators[i].voted = true;
+        localStorage.setItem('senators', JSON.stringify(senators));
+    }
+  }  
+}
+
+// TODO: check local storage for voted == true and then 
+// populate the 2 legends based off of their party
