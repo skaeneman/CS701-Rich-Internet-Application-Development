@@ -1,7 +1,7 @@
 window.onload = init;
 
 // variables for drag and drop actions
-var src, target, msg, sourceId;
+var src, target, msg, sourceId, republicans;
 
 // called on page load
 function init() {
@@ -21,6 +21,7 @@ function init() {
   src = document.getElementById("members");
   target = document.getElementById("dropLists");
   msg = document.getElementById("msg");
+  republicans = document.getElementById("republicans");
 
   // Add event handlers for the source
   src.ondragstart = dragStartHandler;
@@ -123,23 +124,73 @@ function dragHandler(e) {
 }
 
 function dragEnterHandler(e) {
-    e.preventDefault();  
+  msg.innerHTML = "Drag Entering " + e.target.id;
+  e.preventDefault();
 }
 
 function dragOverHandler(e) {
-  msg.innerHTML = "Drag over " + e.target.id;
-  e.preventDefault();
+
+  // causes legends to disapear after the drop
+  msg.innerHTML = "Drag Over " + e.target.id;
+  e.preventDefault();  
 }
 
 function dropHandler(e) {
   console.log("Drop on " + e.target.id + 
            " source is " + e.dataTransfer.getData("Text")) ;
  
-  var id = e.dataTransfer.getData("text") || sourceId;
-  var sourceElement = document.getElementById(id);
-  var newElement = sourceElement.cloneNode(false);               
-  target.innerHTML = "";
-  target.appendChild(newElement);
+  console.log('sourceid', sourceId);
+
+  var sourceElement = document.getElementById(sourceId);
+  var newElement = sourceElement.cloneNode(true); // show in legend
+  
+  // dragging from the legend is not allowed after a vote is cast
+  newElement.setAttribute("draggable", "false");
+  // prevent a senator from voting twice
+  sourceElement.setAttribute("draggable", "false");
+
+
+
+  var senator = findSenator(sourceId);
+  senator.voted = true; // update vote to true
+  var politicalParty = e.target.id;
+
+
+  console.log('senator.party', senator.party);
+  console.log('politicalParty', politicalParty);
+
+  if (politicalParty == 'republicans') {
+    politicalParty = 'Republican';
+  } 
+  else if (politicalParty == 'democrats') {
+    politicalParty = 'Democrat';
+  }
+
+  // check if senator is voting in correct party
+  if (senator.party == politicalParty) {
+    // allow the senator to cast a vote
+    console.log('senator', senator);
+    // todo: HARD CODED TEST...
+    republicans.appendChild(newElement);
+  } else {
+    // they tried to vote in the wrong political party
+    msg.innerHTML = sourceId + " tried to vote in the wrong party...";
+  }
+
   e.preventDefault();
+}
+
+// lookup a senator by name
+function findSenator(name) {
+  // get localStorage
+  var localStorageSenators = localStorage.getItem("senators");
+  var senators = JSON.parse(localStorageSenators);
+
+  // lookup a senators name
+  for (var i = 0; i < senators.length; i++) {
+    if (senators[i].name == name) {   
+      return senators[i];
+    }
+  };
 }
 
