@@ -69,7 +69,7 @@ function processXml(xml) {
 
     // loop through array to format output and make dragable
     senatorArr.forEach(senator => {
-        output += "<li draggable='true'>" + senator.name + "</li>";        
+        output += `<li draggable='true' id="${senator.name}">` + senator.name + "</li>";        
     });
 
     // send formatted output to an html element
@@ -88,7 +88,7 @@ function loadFromLocalStorage(senators) {
 
     // loop through array to format output and make dragable
     senators.forEach(senator => {
-        output += "<li draggable='true'>" + senator.name + "</li>";        
+        output += `<li draggable='true' id="${senator.name}">` + senator.name + "</li>"; 
     });
 
     // send formatted output to an html element
@@ -123,23 +123,12 @@ function dragHandler(e) {
 }
 
 function dragEnterHandler(e) {
-  console.log("Drag Entering " + e.target.id + 
-          " source is " + e.dataTransfer.getData("Text") );
-
-  var id = e.dataTransfer.getData("text") || sourceId;
-  if (id == "kalathur") {
-      e.preventDefault();
-  }
+    e.preventDefault();  
 }
 
 function dragOverHandler(e) {
-  console.log("Drag Over " + e.target.id + 
-           " source is " + e.dataTransfer.getData("Text")) ;
-
-  var id = e.dataTransfer.getData("text") || sourceId;
-  if (id == "kalathur") {
-      e.preventDefault();
-  }
+  msg.innerHTML = "Drag over " + e.target.id;
+  e.preventDefault();
 }
 
 function dropHandler(e) {
