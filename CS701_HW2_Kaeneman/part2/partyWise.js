@@ -1,7 +1,7 @@
 window.onload = init;
 
 // variables for drag and drop actions
-var src, target, msg, sourceId, republicans;
+var src, target, msg, sourceId, republicans, democrats;
 
 // called on page load
 function init() {
@@ -22,6 +22,7 @@ function init() {
   target = document.getElementById("dropLists");
   msg = document.getElementById("msg");
   republicans = document.getElementById("republicans");
+  democrats = document.getElementById("democrats");
 
   // Add event handlers for the source
   src.ondragstart = dragStartHandler;
@@ -142,7 +143,7 @@ function dropHandler(e) {
   
   var senator = findSenator(sourceId);
   var politicalParty = e.target.id;
-
+  
   // make sure they can only cast a vote in their own party
   var isCorrectParty = checkPoliticalParty(politicalParty, senator);
 
@@ -154,16 +155,16 @@ function dropHandler(e) {
     newElement.setAttribute("draggable", "false");
     // prevent a senator from voting twice
     sourceElement.setAttribute("draggable", "false");    
-
-    // todo: HARD CODED TEST...
-    republicans.appendChild(newElement);
+    
+    // record the senators vote if they are in the correct party
+    senatorCastVote(politicalParty, senator, newElement); 
 
     e.preventDefault();
   } 
   else if (isCorrectParty == false) {
     // they tried to vote in the wrong political party
     // msg.innerHTML = sourceId + " tried to vote in the wrong party...";
-    console.log(senator.name, "vote not counted...wrong party.");
+    console.log(`Wrong party...vote not counted for: ${senator.name}`);
   }
 
 }
@@ -212,6 +213,23 @@ function updateLocalStorage(senator) {
         localStorage.setItem('senators', JSON.stringify(senators));
     }
   }  
+}
+
+// allows senator to vote if they're in the correct party
+function senatorCastVote(politicalParty, senator, newElement) {
+  // if party matches then accept the vote
+  if (politicalParty == 'republicans') {
+    if (senator.party == 'Republican') {
+      console.log(`Added ${senator.name} to republicans...`);
+      republicans.appendChild(newElement);
+    }      
+  }
+  if (politicalParty == 'democrats') {
+    if (senator.party == 'Democrat') {
+      console.log(`Added ${senator.name} to democrats...`);
+      democrats.appendChild(newElement);
+    }      
+  }   
 }
 
 // TODO: check local storage for voted == true and then 
