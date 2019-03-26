@@ -16,6 +16,9 @@ function init() {
     // else data aleady in local storage, convert it into a JavaScript object
     var senators = JSON.parse(localStorageSenators);
     loadFromLocalStorage(senators);
+
+    // populate html elements with the senators who voted already
+    senatorsWhoAlreadyVoted();    
   }
 
   src = document.getElementById("members");
@@ -88,9 +91,14 @@ function processXml(xml) {
 function loadFromLocalStorage(senators) {
     var output = '';
 
-    // loop through array to format output and make dragable
+    // loop through array to format output and make dragable if 'voted' set to false
     senators.forEach(senator => {
-        output += `<li draggable='true' id="${senator.name}">` + senator.name + "</li>"; 
+        if (senator.voted == true) {
+            // already voted so don't allow drag and drop
+            output += `<li draggable='false' id="${senator.name}">` + senator.name + "</li>"; 
+        } else {
+            output += `<li draggable='true' id="${senator.name}">` + senator.name + "</li>"; 
+        }       
     });
 
     // send formatted output to an html element
@@ -156,7 +164,7 @@ function dropHandler(e) {
     // prevent a senator from voting twice
     sourceElement.setAttribute("draggable", "false");    
     
-    // record the senators vote if they are in the correct party
+    // record the senators vote
     senatorCastVote(politicalParty, senator, newElement); 
 
     e.preventDefault();
@@ -232,5 +240,37 @@ function senatorCastVote(politicalParty, senator, newElement) {
   }   
 }
 
-// TODO: check local storage for voted == true and then 
-// populate the 2 legends based off of their party
+// check local storage to see who already voted and populate the div's
+function senatorsWhoAlreadyVoted() {
+  var senators = localStorage.getItem('senators');
+  var senatorsArr = JSON.parse(senators);
+  var votedAlready = [];
+  var republicans = document.getElementById("republicans");
+  var democrats = document.getElementById("democrats");
+  var repubOutput = republicans.innerHTML;
+  var demOutput = democrats.innerHTML;
+ 
+  // find the senators that have voted
+  for (var i = 0; i < senatorsArr.length; i++) {
+    if (senatorsArr[i].voted == true) {
+      // create array of JSON objects to hold senators who voted
+      votedAlready.push({
+        name: senatorsArr[i].name,
+        party: senatorsArr[i].party
+      });
+    }
+  }
+
+  // populate the html elements with the senators names
+  for (var x = 0; x < votedAlready.length; x++) {
+    if (votedAlready[x].party == 'Republican') {
+      repubOutput += `<li draggable='false' id="${votedAlready[x].name}">` + votedAlready[x].name + "</li>";        
+      republicans.innerHTML = repubOutput;
+    }
+    if (votedAlready[x].party == 'Democrat') {
+      demOutput += `<li draggable='false' id="${votedAlready[x].name}">` + votedAlready[x].name + "</li>";        
+      democrats.innerHTML = demOutput;
+    }    
+  }
+
+}
