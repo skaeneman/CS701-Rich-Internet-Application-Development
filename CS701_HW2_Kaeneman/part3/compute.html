@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Web Worker Sample</title>
+        <title>Web Workers</title>
         <meta charset="utf-8">
-        <script src="ex03_jsonSample.js"></script>
+        <script src="compute.js"></script>
         <link rel="stylesheet" href="html5.css">
     </head>
     <body>
       <header>
-        <h2>Web Worker JSON Example</h2>
+        <h1>Web Workers</h1>
       </header>
   
         <section>
             <article>
-                Send:   <input type="text" id="msg" value="Hello">
+                <div id="error" style="color:red"></div>
                 <p></p>
-                <button id="echoButton">Echo</button>
-                <button id="revButton">Reverse</button>
-                <button id="stopButton">Stop</button>
+                Number of web workers: <input type="text" id="numWorkers" value="1">
+                <p></p>
+                <button id="startButton">Start Workers</button>
                 <p></p>
                 <h3>Received Messages</h3>
                
