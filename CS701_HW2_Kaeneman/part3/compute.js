@@ -7,7 +7,6 @@ var numOfWorkers;
 function init() {
 	var startButton = document.getElementById("startButton");
     startButton.onclick = startWorker;
-    numOfWorkers = document.getElementById("numWorkers");
 
 	// var sendButton = document.getElementById("sendButton");
 	// sendButton.onclick = sendMessageToWorker;
@@ -17,8 +16,13 @@ function init() {
 
 // start the Web Worker and register the event handler
 function startWorker(e) {
+    // get input value
+    var numOfWorkers = document.getElementById("numWorkers").value;
+    console.log('numOfWorkers', numOfWorkers);
+
     // check if the input was a number
-    if (isNaN(numOfWorkers)) {
+    var num = parseInt(numOfWorkers);
+    if (isNaN(num)) {
         var error = document.getElementById("error");
         error.innerHTML = "Error...please enter an integer."
     } else {
@@ -26,6 +30,13 @@ function startWorker(e) {
         if (myWorker == null) {
             myWorker = new Worker("computeWorker.js");
             myWorker.addEventListener("message", handleReceipt, false);
+
+            // contact the web worker 5 times
+            var count = 5;
+            for (var i=0; i < count; i++) {
+                sendMessageToWorker();
+                count--;
+            }
         }	
     }
 }
@@ -40,7 +51,7 @@ function handleReceipt(event) {
 
 // send message to the Web Worker
 function sendMessageToWorker(e) {
-	var data = document.getElementById("msg").value;
+    var data = document.getElementById("numWorkers").value;    
     if (myWorker != null) {
         myWorker.postMessage(data);
     }    
