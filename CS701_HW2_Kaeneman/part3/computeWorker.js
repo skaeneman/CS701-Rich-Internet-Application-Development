@@ -5,10 +5,16 @@ self.onmessage = messageHandler;
 var counter = 1;
 
 function messageHandler(e) {
-  console.log('test', e.data);
-  
-  postMessage("Worker echos " + e.data + 
-                " too #" + counter);
-  counter++;
+
+console.log(e.numWorkers);
+// console.log(e.high);
+
+
+  // var low = parseInt(e.low);
+  // var high = parseInt(e.high);
+
+  // postMessage("Worker echos " + low +""+ high +
+  //               " too #" + counter);
+  // counter++;
 }
 

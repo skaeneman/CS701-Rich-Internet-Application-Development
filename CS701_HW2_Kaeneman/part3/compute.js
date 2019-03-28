@@ -2,7 +2,7 @@ window.onload = init;
 
 // the worker
 var myWorker;
-var numOfWorkers;
+// var numOfWorkers;
 
 function init() {
 	var startButton = document.getElementById("startButton");
@@ -18,11 +18,16 @@ function init() {
 function startWorker(e) {
     // get input value
     var numOfWorkers = document.getElementById("numWorkers").value;
-    console.log('numOfWorkers', numOfWorkers);
+    var range = document.getElementById("range").value;
 
-    // check if the input was a number
-    var num = parseInt(numOfWorkers);
-    if (isNaN(num)) {
+    console.log('numOfWorkers', numOfWorkers);
+    console.log('range', range);
+
+    var numOfWorkers = parseInt(numOfWorkers);
+    var range = parseInt(range);
+
+    // check if the input was an integer
+    if (isNaN(numOfWorkers) || isNaN(range)) {
         var error = document.getElementById("error");
         error.innerHTML = "Error...please enter an integer."
     } else {
@@ -30,13 +35,18 @@ function startWorker(e) {
         if (myWorker == null) {
             myWorker = new Worker("computeWorker.js");
             myWorker.addEventListener("message", handleReceipt, false);
+            
+            var numMax = range / numOfWorkers;
+            var numLow = 1;
+            var numHigh = numMax;
 
-            // contact the web worker 5 times
-            var count = 5;
-            for (var i=0; i < count; i++) {
-                sendMessageToWorker();
-                count--;
+            // loop to create each web worker
+            for (var i = 0; i < numOfWorkers; i++) {
+                sendMessageToWorker(numLow, numHigh);
+                numLow += numMax;
+                numHigh += numMax;
             }
+
         }	
     }
 }
@@ -51,9 +61,13 @@ function handleReceipt(event) {
 
 // send message to the Web Worker
 function sendMessageToWorker(e) {
-    var data = document.getElementById("numWorkers").value;    
+    var numWorkers = document.getElementById("numWorkers").value;  
+    // var range = document.getElementById("range").value;
+    // var low = parseInt(low);
+    // var high = parseInt(high);
+
     if (myWorker != null) {
-        myWorker.postMessage(data);
+        myWorker.postMessage(numWorkers);
     }    
  }
 
