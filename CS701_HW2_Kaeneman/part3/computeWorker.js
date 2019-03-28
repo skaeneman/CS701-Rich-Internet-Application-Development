@@ -2,19 +2,23 @@ self.onmessage = messageHandler;
 // or,
 //addEventListener("message", messageHandler, true);
 
-var counter = 1;
+// var counter = 1;
 
 function messageHandler(e) {
 
-console.log(e.numWorkers);
-// console.log(e.high);
+  // computes sum of all integers from the start value to the end value
+  var numStart = parseInt(e.data.add.numStart);
+  var numEnd = parseInt(e.data.add.numEnd);
 
-
-  // var low = parseInt(e.low);
-  // var high = parseInt(e.high);
-
+  var sum = 0;
+  for (var i=numStart; i <= numEnd; i++) {
+    console.log('i', i);
+    sum += i;
+    console.log(sum);
+  }
   // postMessage("Worker echos " + low +""+ high +
   //               " too #" + counter);
   // counter++;
 }
+
 

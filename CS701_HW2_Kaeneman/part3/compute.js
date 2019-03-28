@@ -33,16 +33,21 @@ function startWorker(e) {
     } else {
         // else an integer was received so kick off the web worker
         if (myWorker == null) {
-            myWorker = new Worker("computeWorker.js");
-            myWorker.addEventListener("message", handleReceipt, false);
-            
             var numMax = range / numOfWorkers;
             var numLow = 1;
             var numHigh = numMax;
 
             // loop to create each web worker
             for (var i = 0; i < numOfWorkers; i++) {
-                sendMessageToWorker(numLow, numHigh);
+
+                myWorker = new Worker("computeWorker.js");
+                myWorker.addEventListener("message", handleReceipt, false);
+                
+                console.log('inside startWorker...');
+                console.log('numLow', numLow);
+                console.log('numHigh', numHigh);
+
+                sendMessageToWorker(e, numLow, numHigh);
                 numLow += numMax;
                 numHigh += numMax;
             }
@@ -60,14 +65,17 @@ function handleReceipt(event) {
 }
 
 // send message to the Web Worker
-function sendMessageToWorker(e) {
-    var numWorkers = document.getElementById("numWorkers").value;  
-    // var range = document.getElementById("range").value;
-    // var low = parseInt(low);
-    // var high = parseInt(high);
+function sendMessageToWorker(e, numLow, numHigh) {
+
+    console.log('inside sendMessageToWorker...');
+    console.log('numLow', numLow);
+    console.log('numHigh', numHigh);
+
+    // JSON object to pass high and low numbers to worker
+    numberBlock = {add: {numStart: numLow, numEnd: numHigh}};
 
     if (myWorker != null) {
-        myWorker.postMessage(numWorkers);
+        myWorker.postMessage(numberBlock);
     }    
  }
 
