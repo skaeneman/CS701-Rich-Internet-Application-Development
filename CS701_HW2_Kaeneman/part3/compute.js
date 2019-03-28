@@ -47,7 +47,7 @@ function startWorker(e) {
                 console.log('numLow', numLow);
                 console.log('numHigh', numHigh);
 
-                sendMessageToWorker(e, numLow, numHigh);
+                sendMessageToWorker(e, numLow, numHigh, i);
                 numLow += numMax;
                 numHigh += numMax;
             }
@@ -58,21 +58,26 @@ function startWorker(e) {
 
 // Handle messages received from the Web Worker
 function handleReceipt(event) {
+    console.log('inside handleReceipt...');
+    console.log(event.data.start);
+
+    var output = JSON.stringify(event.data);
+
     var itemsList = document.getElementById("items");
     var item = document.createElement("li");
-    item.innerHTML = event.data;
+    item.innerHTML = output;
     items.appendChild(item);
 }
 
 // send message to the Web Worker
-function sendMessageToWorker(e, numLow, numHigh) {
+function sendMessageToWorker(e, numLow, numHigh, count) {
 
     console.log('inside sendMessageToWorker...');
     console.log('numLow', numLow);
     console.log('numHigh', numHigh);
 
     // JSON object to pass high and low numbers to worker
-    numberBlock = {add: {numStart: numLow, numEnd: numHigh}};
+    numberBlock = {numStart: numLow, numEnd: numHigh, workerNum: count};
 
     if (myWorker != null) {
         myWorker.postMessage(numberBlock);
