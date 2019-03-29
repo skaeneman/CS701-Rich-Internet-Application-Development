@@ -2,7 +2,9 @@ window.onload = init;
 
 // the worker
 var myWorker;
-var saveToLocalStorage = [];
+var localStorageArr = [];
+var total = 0;
+var showTotal = document.createElement("li");
 
 function init() {
 	var startButton = document.getElementById("startButton");
@@ -45,16 +47,25 @@ function startWorker(e) {
 
 // Handle messages received from the Web Worker
 function handleReceipt(event) {
+    // save result to local storage 1 at a time
+    localStorageArr.push(event.data);
+    localStorage.setItem('HW2-Part3', JSON.stringify(localStorageArr));    
 
-    saveToLocalStorage.push(event.data);
-    console.log('saveToLocalStorage', saveToLocalStorage)
-    localStorage.setItem('HW2-Part3', JSON.stringify(saveToLocalStorage));    
-
-
-    var itemsList = document.getElementById("items");
+    // display web worker
     var item = document.createElement("li");
     item.innerHTML = JSON.stringify(event.data);
     items.appendChild(item);
+
+    // retrieve data from localStorage to display in browser
+    var localStorageItem = document.createElement("li");
+    localStorageItem.innerHTML = localStorage.getItem('HW2-Part3');
+    localStorageItems.appendChild(localStorageItem);
+
+    // show the result total
+    var rslt = event.data.result;
+    total += rslt;
+    showTotal.innerHTML = total;
+    document.getElementById("totalResult").innerHTML = total;
 }
 
 // send message to the Web Worker
