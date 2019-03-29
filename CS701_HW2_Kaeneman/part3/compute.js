@@ -4,7 +4,6 @@ window.onload = init;
 var myWorker;
 var localStorageArr = [];
 var total = 0;
-var showTotal = document.createElement("li");
 
 function init() {
 	var startButton = document.getElementById("startButton");
@@ -64,7 +63,6 @@ function handleReceipt(event) {
     // show the result total
     var rslt = event.data.result;
     total += rslt;
-    showTotal.innerHTML = total;
     document.getElementById("totalResult").innerHTML = total;
 }
 
