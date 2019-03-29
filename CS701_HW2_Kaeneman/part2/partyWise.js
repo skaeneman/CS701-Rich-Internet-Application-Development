@@ -95,7 +95,7 @@ function loadFromLocalStorage(senators) {
     senators.forEach(senator => {
         if (senator.voted == true) {
             // already voted so don't allow drag and drop
-            output += `<li draggable='false' id="${senator.name}">` + senator.name + "</li>"; 
+            output += `<li draggable='false' id="${senator.name}"><strike>` + senator.name + "</strike></li>"; 
         } else {
             output += `<li draggable='true' id="${senator.name}">` + senator.name + "</li>"; 
         }       
@@ -162,8 +162,10 @@ function dropHandler(e) {
     // dragging from the legend is not allowed after a vote is cast
     newElement.setAttribute("draggable", "false");
     // prevent a senator from voting twice
-    sourceElement.setAttribute("draggable", "false");    
-    
+    sourceElement.setAttribute("draggable", "false");   
+    // strike the source element to show it can't be dragged again 
+    sourceElement.style.setProperty("text-decoration", "line-through");
+
     // record the senators vote
     senatorCastVote(politicalParty, senator, newElement); 
 
