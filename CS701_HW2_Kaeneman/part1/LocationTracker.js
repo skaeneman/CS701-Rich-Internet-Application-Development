@@ -11,47 +11,41 @@ var path = [];
 
 var lastMarker = null;
 
+// in milliseconds
+var mapInterval = 5000
+
 // register the event handler for the button
-
 function init() {
-	var checkButton = document.getElementById("checkButton");
-	checkButton.onclick = getLocation;
-	
-	var pathButton = document.getElementById("pathButton");
-    pathButton.onclick = showSamplePath;
-
+	var startButton = document.getElementById("startBtn");
+	startButton.onclick = getLocation;
 }
 
 function getLocation() {
-    
     // asynchronous call with callback success, 
-    // error functions and options specified
-    
+    // error functions and options specified    
     var options = {
         enableHighAccuracy : true,
         timeout : 50000,
         maximumAge : 0
     };
     
-    navigator.geolocation.getCurrentPosition(
-        displayLocation, handleError, options);
+    navigator.geolocation.getCurrentPosition(displayLocation, handleError, options);
+
+    // disable the start button after launching
+    document.getElementById("startBtn").disabled = true;  
+    
+    setInterval(updateMyLocation, mapInterval);
 }
 
 function displayLocation(position) {
-
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
-    var accuracy = position.coords.accuracy;
-    var timestamp = position.timestamp;
 
-    document.getElementById("latitude").innerHTML = 
-            "Latitude: " + latitude;
-    document.getElementById("longitude").innerHTML = 
-            "Longitude: " + longitude;
-    document.getElementById("accuracy").innerHTML = 
-            "Accuracy: " + accuracy + " meters";
-    document.getElementById("timestamp").innerHTML = 
-            "Timestamp: " + timestamp;
+    // setup inital values for the coordinates
+    document.getElementById("latitude").innerHTML = "Start Latitude: " + latitude;
+    document.getElementById("longitude").innerHTML = "Start Longitude: " + longitude;
+    document.getElementById("currentLatitude").innerHTML = "Current Latitude: " + latitude;
+    document.getElementById("currentLongitude").innerHTML = "Current Longitude: " + longitude;
             
     // Show the google map with the position  
     showOnMap(position.coords);
@@ -77,8 +71,7 @@ function updateStatus(message) {
 }
 
 // initialize the map and show the position
-function showOnMap(pos) {
-    
+function showOnMap(pos) {    
     var googlePosition = 
         new google.maps.LatLng(pos.latitude, pos.longitude);
     
@@ -124,18 +117,28 @@ function addMarker(map, latlongPosition, title, content) {
     return marker;
 }
 
-function showSamplePath()
+function updateMyLocation()
 {
     path = [];
-  
-  // first point  
+
+    var index = 0;
+    index++;  // increment the count
+
+    document.getElementById("index").innerHTML = "Update#: " + index;
+
+    // first point  
     var latlong = new google.maps.LatLng(latitude, longitude);
     path.push(latlong);
-  
+
     latitude += Math.random() / 100;
     longitude -= Math.random() / 100;
     
-  // next point
+    document.getElementById("currentLatitude").innerHTML = 
+            "Current Latitude2: " + latitude;
+    document.getElementById("currentLongitude").innerHTML = 
+            "Current Longitude2: " + longitude;
+
+    // next point
     latlong = new google.maps.LatLng(latitude, longitude);
     path.push(latlong);
   
