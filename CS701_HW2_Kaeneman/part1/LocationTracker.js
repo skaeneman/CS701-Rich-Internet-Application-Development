@@ -30,12 +30,10 @@ function beginMapRoute() {
     navigator.geolocation.getCurrentPosition(displayLocation, handleError, options);
 
     // disable the start button after clicking it
-    document.getElementById("startBtn").disabled = true;  
-    
-    // start the automatic movement on the map
-    window.setInterval(updateMyLocation, mapInterval);
+    document.getElementById("startBtn").disabled = true;      
 }
 
+// show initial location and then start the auto updates to the coordinates
 function displayLocation(position) {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
@@ -49,6 +47,9 @@ function displayLocation(position) {
             
     // Show the google map with the position  
     showOnMap(position.coords);
+
+    // start the automatic movement on the map
+    window.setInterval(updateMyLocation, mapInterval);    
 }
 
 function handleError(error) {
