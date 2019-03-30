@@ -134,9 +134,9 @@ function updateMyLocation()
     longitude -= Math.random() / 100;
     
     document.getElementById("currentLatitude").innerHTML = 
-            "Current Latitude2: " + latitude;
+            "Current Latitude: " + latitude;
     document.getElementById("currentLongitude").innerHTML = 
-            "Current Longitude2: " + longitude;
+            "Current Longitude: " + longitude;
 
     // next point
     latlong = new google.maps.LatLng(latitude, longitude);
