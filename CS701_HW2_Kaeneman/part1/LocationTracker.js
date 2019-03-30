@@ -10,18 +10,16 @@ var map = null;
 var path = [];
 
 var lastMarker = null;
-
-// in milliseconds
-var mapInterval = 5000
+var mapInterval = 5000  // in milliseconds
+var index = 1;
 
 // register the event handler for the button
 function init() {
 	var startButton = document.getElementById("startBtn");
-	startButton.onclick = getLocation;
+	startButton.onclick = beginMapRoute;
 }
 
-function getLocation() {
-    // asynchronous call with callback success, 
+function beginMapRoute() {
     // error functions and options specified    
     var options = {
         enableHighAccuracy : true,
@@ -31,10 +29,11 @@ function getLocation() {
     
     navigator.geolocation.getCurrentPosition(displayLocation, handleError, options);
 
-    // disable the start button after launching
+    // disable the start button after clicking it
     document.getElementById("startBtn").disabled = true;  
     
-    setInterval(updateMyLocation, mapInterval);
+    // start the automatic movement on the map
+    window.setInterval(updateMyLocation, mapInterval);
 }
 
 function displayLocation(position) {
@@ -42,6 +41,7 @@ function displayLocation(position) {
     longitude = position.coords.longitude;
 
     // setup inital values for the coordinates
+    document.getElementById("index").innerHTML = "Update#: " + index;
     document.getElementById("latitude").innerHTML = "Start Latitude: " + latitude;
     document.getElementById("longitude").innerHTML = "Start Longitude: " + longitude;
     document.getElementById("currentLatitude").innerHTML = "Current Latitude: " + latitude;
@@ -121,7 +121,6 @@ function updateMyLocation()
 {
     path = [];
 
-    var index = 0;
     index++;  // increment the count
 
     document.getElementById("index").innerHTML = "Update#: " + index;
