@@ -53,16 +53,22 @@
             <th>Title</th>
             <th>Qty</th>
             <th>UnitPrice</th>
+            <th>$UnitPrice</th>
             <th>Line Total</th>
             <th>Total {{total | currency}}</th>
         </tr>
       </thead>
       <tbody ng-repeat="book in books">
         <tr>
-            <td>{{book.title}}</td>
             <td>
-                <input ng-model="book.qty" size="2">
+              <input ng-model="book.title">
             </td>
+            <td>
+                <input ng-model="book.qty" size="3">
+            </td>
+            <td>
+              <input ng-model="book.price">
+            </td>            
             <td>{{book.price | currency}}</td>
             <td>{{book.price * book.qty | currency}}</td>
             <td>
