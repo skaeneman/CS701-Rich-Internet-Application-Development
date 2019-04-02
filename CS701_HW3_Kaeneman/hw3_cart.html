@@ -19,6 +19,16 @@
         $scope.books.splice(index, 1);
       }
       
+      // update book total
+      var books = $scope.books;
+      $scope.updateTotal = function() {
+          $scope.total = 0;
+          for (var i = 0; i < books.length; i++) {
+            // console.log('books[i]', books[i].price);
+            $scope.total += (books[i].price * books[i].qty);
+          }
+      }
+
       $scope.count = 0;
       $scope.updateBookCount = function() {
           console.log("updateBookCount...");
@@ -27,6 +37,7 @@
       
       $scope.$watch('books', function() {
           $scope.updateBookCount();
+          $scope.updateTotal();
       }, true)
     }
   </script>
@@ -43,7 +54,7 @@
             <th>Qty</th>
             <th>UnitPrice</th>
             <th>Line Total</th>
-            <th>Total</th>
+            <th>Total {{total | currency}}</th>
         </tr>
       </thead>
       <tbody ng-repeat="book in books">
