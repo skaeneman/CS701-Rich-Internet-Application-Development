@@ -1,3 +1,8 @@
-<p>
-  part2 works!
-</p>
+<div>
+  <label>Input:</label>
+  <input [(ngModel)]="input"><p></p>
+  <label>Delimiter:</label>
+  <input [(ngModel)]="delimiter">
+  <p>{{input | tokenizer}} (Default)</p>
+  <p>{{input | tokenizer:delimiter}} (With option)</p>
+</div>

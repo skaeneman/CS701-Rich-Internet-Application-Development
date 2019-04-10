@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./part2.component.css']
 })
 export class Part2Component implements OnInit {
+  input:string = "Hello World!";
+  delimiter:string = ",";
 
   constructor() { }
 
