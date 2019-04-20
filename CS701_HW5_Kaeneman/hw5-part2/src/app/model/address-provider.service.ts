@@ -37,15 +37,28 @@ export class AddressProviderService {
   	return friend;
   }
 
+  // save a contact
+  saveFriend(friend: Contact): void {
+  	let contacts:Contact[] = this.getFriends();
+  	let target: Contact = contacts.find(c => {return (c.id == friend.id)});
+  	if (!target) {
+  		contacts.push(friend);
+  	} else {
+      Object.assign(target, friend);
+    }
+  }
+
   // remove a contact
   deleteFriend(friend: Contact) {
-    // get all the contacts
-    const contacts:Contact[] = this.getFriends();
-    // loop through array and delete a contact
-    const index = contacts.indexOf(friend, 0);
-    if (index > -1) {
-      console.log('Deleting: ' + friend.name);
-      contacts.splice(index, 1);
+    if (confirm('You are about to delete: ' + friend.name)) {
+      // get all the contacts
+      const contacts:Contact[] = this.getFriends();
+      // loop through array and delete a contact
+      const index = contacts.indexOf(friend, 0);
+      if (index > -1) {
+        console.log('Deleting: ' + friend.name);
+        contacts.splice(index, 1);
+      }
     }
   }
 

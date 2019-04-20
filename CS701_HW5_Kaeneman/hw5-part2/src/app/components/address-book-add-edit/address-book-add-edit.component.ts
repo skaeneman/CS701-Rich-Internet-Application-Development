@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Contact } from '../../model/contact';
-import { AddressProviderService } from 
+import { AddressProviderService } from
           '../../model/address-provider.service';
 
 @Component({
@@ -16,11 +16,12 @@ export class AddressBookAddEditComponent implements OnInit {
 	friend: Contact;
 	title:  string;
 
-  constructor(private route: ActivatedRoute,
-  		private provider: AddressProviderService) { }
+  constructor(
+          private route: ActivatedRoute,
+          private provider: AddressProviderService,
+          private router: Router) { }
 
   ngOnInit() {
-  	
   	let id = this.route.snapshot.params['id'];
     if (id) {
         this.title = 'Edit Contact';
@@ -30,8 +31,32 @@ export class AddressBookAddEditComponent implements OnInit {
 			this.friend = this.provider.addFriend();
 		}
 		console.log(this.friend);
-
-
   }
+
+  // save a new contact to the array
+  saveFriend() {
+    if (this.isComplete()) {
+      console.log('Saving friend: ' + this.friend.name);
+      this.provider.saveFriend(this.friend);
+      // redirect to info
+      this.router.navigate(['']);
+    }
+  }
+
+  // form validation
+  private isComplete() {
+    let c: Contact = this.friend;
+    if (c.id &&
+        c.name && c.name.length > 0 &&
+        c.address && c.address.length > 0 &&
+        c.phone && c.phone.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+
 
 }
