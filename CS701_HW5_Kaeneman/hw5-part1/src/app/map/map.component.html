@@ -1,7 +1,19 @@
 <div class="container">
   <div class="row">
 
-
+    <form>
+      <div class="row">
+        <div class="col">
+          <input type="text" #start class="form-control" placeholder="Start" (keyup)="startTrip(start.value)" required>
+        </div>
+        <div class="col">
+          <input type="text" #end class="form-control" placeholder="End" (keyup)="endTrip(end.value)" required>
+        </div>
+        <div class="col">
+          <button class='btn btn-outline-dark'>Get Directions</button>
+        </div>
+      </div>
+    </form>
 
   </div>
 </div>
