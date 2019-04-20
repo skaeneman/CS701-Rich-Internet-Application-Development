@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hw5-part2": {
+    "routing-sample2": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/hw5-part2",
+            "outputPath": "dist/routing-sample2",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -25,8 +25,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -44,32 +43,25 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
+              "buildOptimizer": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "hw5-part2:build"
+            "browserTarget": "routing-sample2:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "hw5-part2:build:production"
+              "browserTarget": "routing-sample2:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "hw5-part2:build"
+            "browserTarget": "routing-sample2:build"
           }
         },
         "test": {
@@ -103,20 +95,19 @@
         }
       }
     },
-    "hw5-part2-e2e": {
+    "routing-sample2-e2e": {
       "root": "e2e/",
       "projectType": "application",
-      "prefix": "",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "hw5-part2:serve"
+            "devServerTarget": "routing-sample2:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "hw5-part2:serve:production"
+              "devServerTarget": "routing-sample2:serve:production"
             }
           }
         },
@@ -132,5 +123,5 @@
       }
     }
   },
-  "defaultProject": "hw5-part2"
+  "defaultProject": "routing-sample2"
 }
