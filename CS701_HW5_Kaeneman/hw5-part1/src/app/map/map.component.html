@@ -19,7 +19,7 @@
     <table class="table table-striped">
     <thead>
         <tr>
-          <th scope="col" colspan="12" bgcolor="red">testing</th>
+          <th scope="col" colspan="12" bgcolor="red" class="text-center">Distance: {{ routeDistance}}m - Time: {{ routeTime }} </th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +27,7 @@
           <td><img src="{{leg.iconUrl}}"></td>
           <td>{{ i+1 + '.'}}</td>
           <td><a href="{{leg.mapUrl}}" target="_map">{{ leg.narrative }}</a></td>
-          <td>{{ leg.distance }}</td>
+          <td>{{ leg.distance + 'm'}}</td>
         </tr>
       </tbody>
     </table>

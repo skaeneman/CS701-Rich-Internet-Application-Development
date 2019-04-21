@@ -47,7 +47,7 @@ export class MapquestService {
     const from = 'Boston, MA';
     const to = 'Cambridge, MA';
 
-    let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=${from},VA&to=${to}`;
+    let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=${from},VA&to=${to}&unit=m`;
 
     return this.http
                .jsonp(url, 'callback');
