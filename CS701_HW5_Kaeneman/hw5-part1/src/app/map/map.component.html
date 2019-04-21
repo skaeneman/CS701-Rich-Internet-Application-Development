@@ -9,9 +9,11 @@
         <div class="col">
           <input type="text" #end class="form-control" placeholder="Cambridge" (keyup)="endPoint(end.value)" required>
         </div>
+
         <div class="col">
-          <button class='btn btn-outline-dark'>Get Directions</button>
+          <button class="btn btn-outline-dark" (click)="updateMap(start.value, end.value)">Get Directions</button>
         </div>
+
       </div>
       <br>
     </form>

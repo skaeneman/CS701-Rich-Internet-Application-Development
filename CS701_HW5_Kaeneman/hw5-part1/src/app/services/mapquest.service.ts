@@ -26,32 +26,36 @@ export class MapquestService {
 
 
 
-  // getResults(term: Array<string>): Observable<string[]> {
-  //   const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
-  //   let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=Clarendon Blvd,Arlington,VA&to=2400+S+Glebe+Rd,+Arlington,+VA`;
+  getResults(terms: Array<string>): Observable<string[]> {
+    const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
+    console.log('getResults mapQuest terms', terms);
+    const from = terms[0];
+    const to = terms[1];
 
-  //   return this.http
-  //              .jsonp(url, 'callback')
-  //              .pipe(
-  //              		map((res: HttpResponse<any>) =>  {
-  //                    console.log(res);
-  //                    return <string[]> res[1];
-  //                  }
-  //                )
-  //              	)
-  // }
+    let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=${from},VA&to=${to}&unit=m`;
+
+    return this.http
+               .jsonp(url, 'callback')
+               .pipe(
+               		map((res: HttpResponse<any>) =>  {
+                     console.log(res);
+                     return <string[]> res[1];
+                   }
+                 )
+               	)
+  }
 
   getFullResults(terms: Array<string>): Observable<any> {
     const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
 
-    console.log('mapQuest terms', terms);
+    console.log('getFullResults mapQuest terms', terms);
 
     const from = terms[0];
     const to = terms[1];
 
     console.log('inside getFullResults...');
-    // console.log('from ' + terms[0]);
-    // console.log('to ' + terms[1]);
+    console.log('from ' + terms[0]);
+    console.log('to ' + terms[1]);
 
     let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=${from},VA&to=${to}&unit=m`;
 
