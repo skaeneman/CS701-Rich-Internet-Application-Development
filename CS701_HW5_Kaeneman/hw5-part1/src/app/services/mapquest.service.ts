@@ -25,9 +25,8 @@ export class MapquestService {
 
 
 
-  getResults(term: string): Observable<string[]> {
+  getResults(term: Array<string>): Observable<string[]> {
     const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
-  	// let url: string = `http://en.wikipedia.org/w/api.php?search=${term}&action=opensearch&format=json`;
     let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=Clarendon Blvd,Arlington,VA&to=2400+S+Glebe+Rd,+Arlington,+VA`;
 
     return this.http
@@ -41,11 +40,10 @@ export class MapquestService {
                	)
   }
 
-  getFullResults(term: string): Observable<any> {
-    // let url: string = `http://en.wikipedia.org/w/api.php?search=${term}&action=opensearch&format=json`;
+  getFullResults(from: string, to: string): Observable<any> {
     const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
-    const from = 'Boston, MA';
-    const to = 'Cambridge, MA';
+    // const from = 'Boston, MA';
+    // const to = 'Cambridge, MA';
 
     let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=${from},VA&to=${to}&unit=m`;
 
