@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <div class="row">
 
     <form>
@@ -15,5 +15,49 @@
       </div>
     </form>
 
+    <ul>
+      <li *ngFor="let item of items$ | async">{{item}}</li>
+    </ul>
+
   </div>
 </div>
+ -->
+
+ <div class="container">
+
+    <h2>Wikipedia Demo</h2>
+
+      <p>Search:</p>
+      <input #term (keyup)="search(term.value)"/>
+
+      <ul>
+        <li *ngFor="let item of items$ | async">{{item}}</li>
+      </ul>
+
+  <hr/>
+
+
+
+   <table class="table table-striped">
+    <thead>
+      <tr>
+        <th colspan="3" scope="col">Distance: {{totalDistance}} - Total Time: {{totalTime}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let leg of legs;">
+        <td scope="col">
+          <img src="{{leg.iconUrl}}">
+        </td>
+        <td scope="col">
+          <a href="{{leg.mapUrl}}" target="_map">{{leg.narrative}}</a>
+        </td>
+        <td scope="col">{{leg.distance}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  </div>
+
+
