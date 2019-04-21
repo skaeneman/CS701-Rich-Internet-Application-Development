@@ -12,11 +12,13 @@ import { Observable, Subject} from 'rxjs';
 export class MapComponent implements OnInit {
 
 
-  items$: Observable<string[]>;
+  // items$: Observable<string[]>;
 
   completeData: any;
 
   legs: any;
+  routeDistance: string;
+  routeTime: string;
 
   private searchTerms: Subject<string>;
 
@@ -55,6 +57,8 @@ export class MapComponent implements OnInit {
             console.log(result);
             this.completeData = result;
             this.legs = result.route.legs[0].maneuvers;
+            this.routeDistance = result.route.distance;
+            this.routeTime = result.route.formattedTime;
           });
 
   }
