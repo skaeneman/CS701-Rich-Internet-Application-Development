@@ -23,7 +23,7 @@ export class MapComponent implements OnInit {
   private searchTerms: Subject<Array<string>>;
 
   // setup initial values to load map with
-  searchFrom = 'westford, MA';
+  searchFrom = 'Boston, MA';
   searchTo = 'Cambridge, MA';
 
   constructor(private mapService: MapquestService) { }
@@ -33,30 +33,10 @@ export class MapComponent implements OnInit {
     this.searchTerms.next(term);
   }
 
-  // startTrip(from: string): void {
-  //   if ( from != null ) {
-  //     this.mapDirections[0] = from;
-  //   } else {
-  //     this.mapDirections[0] = 'Cambridge, MA';
-  //   }
-  //   this.search(this.mapDirections);
-  // }
-
-  // endTrip(to: string): void {
-  //     if ( to != null ) {
-  //       this.mapDirections[1] = to;
-  //     } else {
-  //       this.mapDirections[1] = 'Boston, MA';
-  //     }
-  //     this.search(this.mapDirections);
-  // }
-
-
   ngOnInit() {
 
     // this.searchTerms = new Subject<string>();
     this.searchTerms = new Subject<Array<string>>();
-
 
     // this.items$ =
     //   this.searchTerms.pipe(
@@ -69,17 +49,17 @@ export class MapComponent implements OnInit {
     //     )
     //   );
 
-    this.mapService
-    .getFullResults(this.searchFrom, this.searchTo)
-    .subscribe(result =>
-        {
-          console.log(result);
-          this.completeData = result;
-        });
+    // this.mapService
+    // .getFullResults(this.searchFrom, this.searchTo)
+    // .subscribe(result =>
+    //     {
+    //       console.log(result);
+    //       this.completeData = result;
+    //     });
 
     this.searchTerms.pipe(
-        // wait 2000ms after each keystroke before considering the term
-        debounceTime(2000),
+        // wait 1500ms after each keystroke before considering the term
+        debounceTime(1500),
         // ignore new term if same as previous term
         distinctUntilChanged(),
         switchMap((term: Array<string>) => {
@@ -98,8 +78,7 @@ export class MapComponent implements OnInit {
   }
 
     ngAfterViewInit() {
-    this.search(this.searchFrom);
-    // this.mapService.getFullResults(this.searchFrom, this.searchTo);
+    this.search([this.searchFrom, this.searchTo]);
   }
 
 
