@@ -18,7 +18,7 @@ export class MapComponent implements OnInit {
   legs: any;
   routeDistance: string;
   routeTime: string;
-  mapDirections: Array<string>;
+  mapDirections: Array<string> = [null, null];
 
   private searchTerms: Subject<Array<string>>;
 
@@ -26,11 +26,27 @@ export class MapComponent implements OnInit {
   searchFrom = 'Boston, MA';
   searchTo = 'Cambridge, MA';
 
-  constructor(private mapService: MapquestService) { }
+  constructor(private mapService: MapquestService) {  }
 
   // Push a search term into the observable stream.
   search(term: Array<string>): void {
     this.searchTerms.next(term);
+  }
+
+  startPoint(from: string): void {
+    console.log('startPoint from', from);
+    if ( from != null ) {
+      this.mapDirections[0] = from;
+    }
+    this.search(this.mapDirections);
+  }
+
+  endPoint(to: string): void {
+    console.log('startPoint to', to);
+    if ( to != null ) {
+      this.mapDirections[1] = to;
+    }
+    this.search(this.mapDirections);
   }
 
   ngOnInit() {
@@ -38,33 +54,14 @@ export class MapComponent implements OnInit {
     // this.searchTerms = new Subject<string>();
     this.searchTerms = new Subject<Array<string>>();
 
-    // this.items$ =
-    //   this.searchTerms.pipe(
-    //   // wait 1000ms after each keystroke before considering the term
-    //   debounceTime(1000),
-    //   // ignore new term if same as previous term
-    //   distinctUntilChanged(),
-    //     switchMap((term: string) =>
-    //       this.mapService.getResults(term)
-    //     )
-    //   );
-
-    // this.mapService
-    // .getFullResults(this.searchFrom, this.searchTo)
-    // .subscribe(result =>
-    //     {
-    //       console.log(result);
-    //       this.completeData = result;
-    //     });
-
     this.searchTerms.pipe(
-        // wait 1500ms after each keystroke before considering the term
-        debounceTime(1500),
+        // wait 2000ms after each keystroke before considering the term
+        debounceTime(2000),
         // ignore new term if same as previous term
         distinctUntilChanged(),
-        switchMap((term: Array<string>) => {
-          console.log('getting search term...', term);
-          return this.mapService.getFullResults(this.searchFrom, this.searchTo);
+        switchMap((terms: Array<string>) => {
+          console.log('getting search term...', terms.length);
+          return this.mapService.getFullResults(terms);
         })
       )
     .subscribe((result: any)=> {
@@ -77,8 +74,9 @@ export class MapComponent implements OnInit {
 
   }
 
+    // load page with initial values for map
     ngAfterViewInit() {
-    this.search([this.searchFrom, this.searchTo]);
+      this.search([this.searchFrom, this.searchTo]);
   }
 
 

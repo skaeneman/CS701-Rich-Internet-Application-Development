@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
+import { ComponentFactoryResolver } from '@angular/core/src/render3';
 
 @Injectable({
   providedIn: 'root'
@@ -25,25 +26,32 @@ export class MapquestService {
 
 
 
-  getResults(term: Array<string>): Observable<string[]> {
-    const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
-    let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=Clarendon Blvd,Arlington,VA&to=2400+S+Glebe+Rd,+Arlington,+VA`;
+  // getResults(term: Array<string>): Observable<string[]> {
+  //   const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
+  //   let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=Clarendon Blvd,Arlington,VA&to=2400+S+Glebe+Rd,+Arlington,+VA`;
 
-    return this.http
-               .jsonp(url, 'callback')
-               .pipe(
-               		map((res: HttpResponse<any>) =>  {
-                     console.log(res);
-                     return <string[]> res[1];
-                   }
-                 )
-               	)
-  }
+  //   return this.http
+  //              .jsonp(url, 'callback')
+  //              .pipe(
+  //              		map((res: HttpResponse<any>) =>  {
+  //                    console.log(res);
+  //                    return <string[]> res[1];
+  //                  }
+  //                )
+  //              	)
+  // }
 
-  getFullResults(from: string, to: string): Observable<any> {
+  getFullResults(terms: Array<string>): Observable<any> {
     const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
-    // const from = 'Boston, MA';
-    // const to = 'Cambridge, MA';
+
+    console.log('mapQuest terms', terms);
+
+    const from = terms[0];
+    const to = terms[1];
+
+    console.log('inside getFullResults...');
+    // console.log('from ' + terms[0]);
+    // console.log('to ' + terms[1]);
 
     let url: string = `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=${from},VA&to=${to}&unit=m`;
 

@@ -4,10 +4,10 @@
     <form>
       <div class="row">
         <div class="col">
-          <input type="text" #from class="form-control" placeholder="Start" (keyup)="search(from.value)" required>
+          <input type="text" #start class="form-control" placeholder="Boston" (keyup)="startPoint(start.value)" required>
         </div>
         <div class="col">
-          <input type="text" #to class="form-control" placeholder="End" (keyup)="search(to.value)" required>
+          <input type="text" #end class="form-control" placeholder="Cambridge" (keyup)="endPoint(end.value)" required>
         </div>
         <div class="col">
           <button class='btn btn-outline-dark'>Get Directions</button>
