@@ -72,8 +72,8 @@ export class MapComponent implements OnInit {
     this.searchTerms = new Subject<Array<string>>();
 
     this.searchTerms.pipe(
-        // wait 2000ms after each keystroke before considering the term
-        debounceTime(2000),
+        // wait 1000ms after each keystroke before considering the term
+        debounceTime(1000),
         // ignore new term if same as previous term
         distinctUntilChanged(),
         switchMap((terms: Array<string>) => {
