@@ -64,6 +64,18 @@ export class MapquestService {
   }
 
 
+  // update the directions when the search button is clicked
+  getUpdatedDirections(from: string, to: string): Observable<any> {
+    const mapQuestKey = 'g1o4dcIFlsae3EJOc3hLUm1X89mSSs8U';
+  	let url: string =
+    `http://open.mapquestapi.com/directions/v2/route?key=${mapQuestKey}&from=${from},VA&to=${to}&unit=m`;
+
+    return this.http
+               .jsonp(url, 'callback');
+
+  }
+
+
 
 }
 
