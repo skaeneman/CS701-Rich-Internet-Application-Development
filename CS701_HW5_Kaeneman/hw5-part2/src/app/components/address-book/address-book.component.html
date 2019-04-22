@@ -1,10 +1,9 @@
 <h3>Current Contacts</h3>
-    
+
 <ul>
   <li *ngFor="let friend of friends">
-    <a [routerLink]="['/details',  friend.id ]" >
-    		{{friend.name}}
-    </a>
+    <a [routerLink]="['/details',  friend.id ]" >{{friend.name}}</a>&nbsp;&nbsp;
+    <a href="#" (click)="deleteFriend(friend)">(delete)</a>
   </li>
 </ul>
 

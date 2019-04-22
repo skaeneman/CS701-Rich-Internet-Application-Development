@@ -33,7 +33,7 @@ export class AddressProviderService {
 
   	let friend: Contact = new Contact();
   	friend.id = maxId + 1;
-  	friends.push(friend);
+  	// friends.push(friend);
   	return friend;
   }
 
