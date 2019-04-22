@@ -44,6 +44,7 @@ export class AddressProviderService {
   	if (!target) {
   		contacts.push(friend);
   	} else {
+      console.log('target ', target, 'friend ', friend);
       Object.assign(target, friend);
     }
   }
