@@ -12,8 +12,6 @@ import { Observable, Subject} from 'rxjs';
 })
 export class MapComponent implements OnInit {
 
-  // items$: Observable<string[]>;
-
   completeData: any;
   legs: any;
   routeDistance: string;
@@ -36,7 +34,7 @@ export class MapComponent implements OnInit {
   // start of trip
   startPoint(from: string): void {
     console.log('startPoint from', from);
-    if (from != null) {
+    if ((from !== '') && (from !== null)) {
       this.mapDirections[0] = from;
     }
     this.search(this.mapDirections);
@@ -44,32 +42,33 @@ export class MapComponent implements OnInit {
 
   // end of trip
   endPoint(to: string): void {
-    console.log('startPoint to', to);
-    if (to != null) {
+    console.log('endPoint to', to);
+    if ((to !== '') && (to !== null)) {
       this.mapDirections[1] = to;
     }
     this.search(this.mapDirections);
   }
 
-
-  // update map when button pressed
+  // update the map directions when button pressed
   updateMap(from: string, to: string) {
-    console.log('from to...', from, to);
-  	this.mapService.getUpdatedDirections(from, to)
-  	.subscribe(result =>
-  				{
+    console.log('from ', from, 'to ', to);
+    if (from !== '' && to !== '') {
+      this.mapService.getUpdatedDirections(from, to)
+  	.subscribe(result => {
             console.log(result);
             this.completeData = result;
             this.legs = result.route.legs[0].maneuvers;
             this.routeDistance = result.route.distance;
             this.routeTime = result.route.formattedTime;
           });
+    } else {
+      console.log('no input received...');
+    }
   }
 
 
   ngOnInit() {
 
-    // this.searchTerms = new Subject<string>();
     this.searchTerms = new Subject<Array<string>>();
 
     this.searchTerms.pipe(
@@ -78,8 +77,6 @@ export class MapComponent implements OnInit {
         // ignore new term if same as previous term
         distinctUntilChanged(),
         switchMap((terms: Array<string>) => {
-          console.log('getting search term...', terms.length);
-          console.log('this.mapDirections.values', this.mapDirections.values());
           return this.mapService.getFullResults(terms);
         })
       )
